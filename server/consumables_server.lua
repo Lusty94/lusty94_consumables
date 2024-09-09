@@ -62,8 +62,8 @@ RegisterNetEvent('lusty94_consumables:server:UseItem', function(itemName)
     local Player = QBCore.Functions.GetPlayer(src)
     if Player then
         if InvType == 'qb' then
-            if Player.Functions.RemoveItem(itemName, 1) then
-                TriggerClientEvent('inventory:client:ItemBox', src, QBCore.Shared.Items[itemName], "remove")
+            if exports['qb-inventory']:RemoveItem(src, itemName, 1, nil, nil, nil) then
+                TriggerClientEvent('qb-inventory:client:ItemBox', src, QBCore.Shared.Items[itemName], "remove")
             end
             if debug then print('| Lusty94_Consumables | Item Removed: ', itemName) end
         elseif InvType == 'ox' then

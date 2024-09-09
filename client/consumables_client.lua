@@ -293,5 +293,5 @@ AddEventHandler('onResourceStop', function(resourceName)
     if DoesEntityExist(currentProp) then DeleteEntity(currentProp) end
     busy = false
     LockInventory(false)
-    print('^5--<^3!^5>-- ^7| Lusty94 |^5 ^5--<^3!^5>--^7 Consumables V1.0.0 Stopped Successfully ^5--<^3!^5>--^7')
+    print('^5--<^3!^5>-- ^7| Lusty94 |^5 ^5--<^3!^5>--^7 Consumables V1.0.1 Stopped Successfully ^5--<^3!^5>--^7')
 end)
