@@ -21,14 +21,14 @@ local function SendNotify(msg,type,time,title)
         exports['okokNotify']:Alert(title, msg, time, type, true)
     elseif NotifyType == 'mythic' then
         exports['mythic_notify']:DoHudText(type, msg)
-    elseif NotifyType == 'boii' then
-        exports['boii_ui']:notify(title, msg, type, time)
     elseif NotifyType == 'ox' then
         lib.notify({ title = title, description = msg, type = type, duration = time})
     elseif NotifyType == 'custom' then
         --insert your own notify functions here
     end
 end
+
+
 
 --drink alcohol effect
 function alcoholEffect()
@@ -252,46 +252,28 @@ RegisterNetEvent('lusty94_consumables:client:UseItem', function(itemName)
                     end)
                 end
             end
-        end, itemName) -- Pass the itemName to the callback
+        end, itemName)
     end
 end)
 
 
 -- function to lock inventory to prevent exploits
-function LockInventory(toggle) -- big up to jim for how to do this
+function LockInventory(toggle)
 	if toggle then
-        LocalPlayer.state:set("inv_busy", true, true) -- used by qb, ps and ox
-        --this is the old method below
-        --[[         
-        if InvType == 'qb' then
-            this is for the old method if using old qb and ox
-            TriggerEvent('inventory:client:busy:status', true) TriggerEvent('canUseInventoryAndHotbar:toggle', false)
-        elseif InvType == 'ox' then
-            LocalPlayer.state:set("inv_busy", true, true)
-        end         
-        ]]
+        LocalPlayer.state:set("inv_busy", true, true)
     else 
-        LocalPlayer.state:set("inv_busy", false, true) -- used by qb, ps and ox
-        --this is the old method below
-        --[[        
-        if InvType == 'qb' then
-            this is for the old method if using old qb and ox
-         TriggerEvent('inventory:client:busy:status', false) TriggerEvent('canUseInventoryAndHotbar:toggle', true)
-        elseif InvType == 'ox' then
-            LocalPlayer.state:set("inv_busy", false, true)
-        end        
-        ]]
+        LocalPlayer.state:set("inv_busy", false, true)
     end
 end
 
 
 
 AddEventHandler('onResourceStop', function(resourceName)
-    if GetCurrentResourceName() ~= resourceName then return end
+    if GetCurrentResourceName() == resourceName then return end
     ClearPedTasks(PlayerPedId())
     StopAllScreenEffects()
     if DoesEntityExist(currentProp) then DeleteEntity(currentProp) end
     busy = false
     LockInventory(false)
-    print('^5--<^3!^5>-- ^7| Lusty94 |^5 ^5--<^3!^5>--^7 Consumables V1.0.1 Stopped Successfully ^5--<^3!^5>--^7')
+    print('^5--<^3!^5>-- ^7| Lusty94 |^5 ^5--<^3!^5>--^7 Consumables V2.0.0 Stopped Successfully ^5--<^3!^5>--^7')
 end)

@@ -1,18 +1,13 @@
 ## Lusty94_Consumables
 
 
-<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-
-PLEASE MAKE SURE TO READ THIS ENTIRE FILE AS IT COVERS SOME IMPORTANT INFORMATION
-
-<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
 
 
+## Script Support
 
-======================================
-SCRIPT SUPPORT VIA DISCORD: https://discord.gg/BJGFrThmA8
-======================================
+- Script support is via Discord for PAID resources ONLY: https://discord.gg/BJGFrThmA8
+
 
 
 
@@ -37,7 +32,6 @@ SCRIPT SUPPORT VIA DISCORD: https://discord.gg/BJGFrThmA8
 - qb-core notify
 - okokNotify
 - mythic_notify
-- boii_ui notify
 - ox_lib notify
 
 

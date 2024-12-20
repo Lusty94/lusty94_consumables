@@ -20,19 +20,18 @@ Config.CoreSettings = {
         Enabled = false, -- enables debugging prints throughout the resource
     },
     Notify = {
-        Type = 'qb', -- notification type, support for ox_lib notify, qb-core notify, okokNotify, mythic_notify and boii_ui notify
+        Type = 'qb', -- notification type, support for ox_lib notify, qb-core notify, okokNotify, mythic_notify and ox_lib notify
         --use 'ox' for ox_lib notify
         --use 'qb' for default qb-core notify
         --use 'okok' for okokNotify
         --use 'mythic' for myhthic_notify
-        --use 'boii' for boii_ui notify
         --use 'custom' for your own notification methods and then edit the SendNotify function in client and server files
     },
     Inventory = { -- Inventory type, support for ox_inventory and qb-inventory
         Type = 'qb',
         --use 'ox' for ox_inventory
         --use 'qb' for qb-inventory
-        --use 'custom' for your own inventory system and then edit the event: 'lusty94_consumables:server:UseItem' - you might also need to edit the callback 'lusty94_consumables:server:hasItem'
+        --use 'custom' for your own inventory system and then edit the function: removeItem()
     },
     Progress = { -- progressbar type, support for ox_lib progressCircle, ox_lib progressBar and qb-progressbar
         Type = 'circle',

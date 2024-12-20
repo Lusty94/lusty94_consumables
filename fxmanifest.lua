@@ -8,7 +8,7 @@ author 'Lusty94'
 
 description 'Consumables Script For QB-Core'
 
-version '1.0.1'
+version '2.0.0'
 
 
 client_scripts {

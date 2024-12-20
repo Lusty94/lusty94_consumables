@@ -6,6 +6,7 @@ local debug = Config.CoreSettings.Debugging.Enabled
 
 --notification function
 local function SendNotify(src, msg, type, time, title)
+    if NotifyType == nil then print("Lusty94_Consumables: NotifyType Not Set in Config.CoreSettings.Notify.Type!") return end
     if not title then title = "Consumables" end
     if not time then time = 5000 end
     if not type then type = 'success' end
@@ -25,6 +26,21 @@ local function SendNotify(src, msg, type, time, title)
     end
 end
 
+--remove items
+local function removeItem(src, item, amount)
+    if InvType == 'qb' then
+        if exports['qb-inventory']:RemoveItem(src, item, amount, false, false, false) then
+            TriggerClientEvent('qb-inventory:client:ItemBox', src, QBCore.Shared.Items[item], 'remove', amount)
+        end
+    elseif InvType == 'ox' then
+        exports.ox_inventory:RemoveItem(src, item, amount)
+    elseif InvType == 'custom' then
+        --insert your own inventory methods for item removal here following the templates used
+    end
+end
+
+
+--useable items
 for itemName, _ in pairs(Config.Consumables) do
     QBCore.Functions.CreateUseableItem(itemName, function(source, item)
         if debug then print('| Lusty94_Consumables | Server ID: ', source, 'is using: ', itemName) end
@@ -32,6 +48,8 @@ for itemName, _ in pairs(Config.Consumables) do
     end)
 end
 
+
+--callback for items and required items
 QBCore.Functions.CreateCallback('lusty94_consumables:server:hasItem', function(source, cb, itemName)
     local src = source
     local Player = QBCore.Functions.GetPlayer(src)
@@ -61,19 +79,8 @@ RegisterNetEvent('lusty94_consumables:server:UseItem', function(itemName)
     local src = source
     local Player = QBCore.Functions.GetPlayer(src)
     if Player then
-        if InvType == 'qb' then
-            if exports['qb-inventory']:RemoveItem(src, itemName, 1, nil, nil, nil) then
-                TriggerClientEvent('qb-inventory:client:ItemBox', src, QBCore.Shared.Items[itemName], "remove")
-            end
-            if debug then print('| Lusty94_Consumables | Item Removed: ', itemName) end
-        elseif InvType == 'ox' then
-            if exports.ox_inventory:RemoveItem(src, itemName, 1) then
-            end
-            if debug then print('| Lusty94_Consumables | Item Removed: ', itemName) end
-        elseif InvType == 'custom' then
-            --insert your own inventory methods for item removal here
-            if debug then print('| Lusty94_Consumables | Item Removed: ', itemName) end
-        end
+        removeItem(src, itemName, 1)
+        if debug then print('| Lusty94_Consumables | Item Removed: ', itemName) end
     end
 end)
 
@@ -102,7 +109,8 @@ RegisterNetEvent('lusty94_consumables:server:UpdateNeeds', function(itemName)
         if debug then print('| Lusty94_Consumables | New Thirst: ', newThirst) end
     end
 
-    if debug then print('| Lusty94_Consumables | Item Replenishment Type: ', item.replenish, ' Has been updated, New MetaData Values Are: ', newThirst) end
+    if debug then print('| Lusty94_Consumables | Item Replenishment Type: ', item.replenish, ' Has been updated, New Thirst MetaData Values Are: ', newThirst) end
+    if debug then print('| Lusty94_Consumables | Item Replenishment Type: ', item.replenish, ' Has been updated, New Hunger MetaData Values Are: ', newHunger) end
 
     Player.Functions.SetMetaData("hunger", newHunger)
     Player.Functions.SetMetaData("thirst", newThirst)
@@ -115,7 +123,7 @@ end)
 
 
 AddEventHandler('onResourceStart', function(resourceName)
-    if GetCurrentResourceName() ~= resourceName then return end
+    if GetCurrentResourceName() == resourceName then return end
     if debug then
         print('| Lusty94_Consumables | Inventory Type: ', InvType)
         print('| Lusty94_Consumables | Notify Type: ', NotifyType)
@@ -127,13 +135,23 @@ AddEventHandler('onResourceStart', function(resourceName)
 end)
 
 
+--------------< VERSION CHECK >-------------
+
 local function CheckVersion()
-	PerformHttpRequest('https://raw.githubusercontent.com/Lusty94/UpdatedVersions/main/Consumables/version.txt', function(err, newestVersion, headers)
-		local currentVersion = GetResourceMetadata(GetCurrentResourceName(), 'version')
-		if not newestVersion then print("Currently unable to run a version check.") return end
-		local advice = "^1You are currently running an outdated version^7, ^1please update^7"
-		if newestVersion:gsub("%s+", "") == currentVersion:gsub("%s+", "") then advice = '^6You are running the latest version.^7'
-		else print("^3Version Check^7: ^5Current^7: "..currentVersion.." ^5Latest^7: "..newestVersion.." "..advice) end
-	end)
+    PerformHttpRequest('https://raw.githubusercontent.com/Lusty94/UpdatedVersions/main/Consumables/version.txt', function(err, newestVersion, headers)
+        local currentVersion = GetResourceMetadata(GetCurrentResourceName(), 'version')
+        if not newestVersion then
+            print('^1[Lusty94_Consumables]^7: Unable to fetch the latest version.')
+            return
+        end
+        newestVersion = newestVersion:gsub('%s+', '')
+        currentVersion = currentVersion and currentVersion:gsub('%s+', '') or "Unknown"
+        if newestVersion == currentVersion then
+            print(string.format('^2[Lusty94_Consumables]^7: ^6You are running the latest version.^7 (^2v%s^7)', currentVersion))
+        else
+            print(string.format('^2[Lusty94_Consumables]^7: ^3Your version: ^1v%s^7 | ^2Latest version: ^2v%s^7\n^1Please update to the latest version | Changelogs can be found in the support discord.^7', currentVersion, newestVersion))
+        end
+    end)
 end
+
 CheckVersion()
